@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/java/com/example/myapplicationdrawing/MainActivity.kt" value="1.0" />
+        <entry key="app/src/main/res/drawable/baseline_undo_24.xml" value="0.136" />
       </map>
     </option>
   </component>
