@@ -39,11 +39,11 @@ fun ControlsBar(
 ) {
     Row(modifier = Modifier.padding(12.dp), horizontalArrangement = Arrangement.SpaceAround) {
         MenuItems(
-            R.drawable.baseline_undo_24,
+            R.drawable.ic_fill,
             "undo",
             if (undoVisibility.value) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
         ) {
-            if (undoVisibility.value) drawController.unDo()
+            if (undoVisibility.value) undoVisibility.value = !undoVisibility.value
         }
         MenuItems(
             R.drawable.baseline_redo_24,
