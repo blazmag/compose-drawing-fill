@@ -167,7 +167,7 @@ fun Greeting() {
                                     blue = pixel.blue
 
                                     //found white colour, exit loop
-                                    if (red > 0) {
+                                    if (red > 0 && green > 0 && blue > 0) {
                                         lastMatchedIndex = i
                                         break
                                     }
@@ -209,23 +209,23 @@ fun Greeting() {
                                         blue = pixel.blue
 
                                         //found white colour, exit loop
-                                        if (red > 0) {
+                                        if (red > 0 && green > 0 && blue > 0) {
                                             newIndex = i
                                             break
                                         }
                                     } catch (e: Exception) {
                                         Timber.e(e)
                                     }
-                                    if (newIndex != lastMatchedIndex) {
-                                        Timber
-                                            .tag("lol")
-                                            .d("stop moving!")
-                                    } else {
-                                        Timber
-                                            .tag("lol")
-                                            .d("valid")
-                                        path.lineTo(it.x, it.y)
-                                    }
+                                }
+                                if (newIndex != lastMatchedIndex) {
+                                    Timber
+                                        .tag("lol")
+                                        .d("stop moving!")
+                                } else {
+                                    Timber
+                                        .tag("lol")
+                                        .d("valid")
+                                    path.lineTo(it.x, it.y)
                                 }
                             }
                         }
@@ -248,44 +248,6 @@ fun Greeting() {
                 }
                 action.value = "${it.x},${it.y}"
                 true
-            }
-            .pointerInput(Unit) {
-                detectTapGestures { offset: Offset ->
-                    // Touch coordinates on image view
-                    offsetX = offset.x
-                    offsetY = offset.y
-                    if (imageSize.isSpecified) {
-                        //calculate offset
-                        val scaledX = (bitmapsList[0].width / imageSize.width) * offsetX
-                        val scaledY = (bitmapsList[0].height / imageSize.height) * offsetY
-                        for ((i, bitmap) in bitmapsList.withIndex()) {
-                            try {
-                                val pixel = bitmap
-                                    .asAndroidBitmap()
-                                    .getPixel(scaledX.toInt(), scaledY.toInt())
-                                //val pixelMap = bitmap.toPixelMap(startX = xx.toInt(), startY = yy.toInt(), width = 1, height = 1)
-                                red = pixel.red
-                                green = pixel.green
-                                blue = pixel.blue
-
-                                //found white colour, exit loop
-                                if (red > 0) {
-                                    lastMatchedIndex = i
-                                    break
-                                }
-                            } catch (e: Exception) {
-                                Timber.e(e)
-                            }
-
-                            Timber
-                                .tag("lol")
-                                .d(
-                                    "image: $i color RGB: $red $green $blue, bitmap height: ${bitmap.height} img width:${bitmap.width} container height ${imageSize.height} width ${imageSize.width}" +
-                                            "scaled x $scaledX scaled y $scaledY, motion $offset "
-                                )
-                        }
-                    }
-                }
             }
         )
 
@@ -363,7 +325,11 @@ fun Greeting() {
             redoVisibility = redoVisibility,
             colorValue = currentColor,
             bgColorValue = currentBgColor,
-            sizeValue = currentSize
+            sizeValue = currentSize,
+            onReset = {
+                bitmapsList.clear()
+                bitmapsList.addAll(ids.map { ImageBitmap.imageResource(id = it, res = context.resources) }.toList())
+            }
         )
         RangVikalp(isVisible = colorBarVisibility.value, showShades = true) {
             if (colorIsBg.value) {

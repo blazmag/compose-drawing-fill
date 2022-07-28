@@ -35,7 +35,8 @@ fun ControlsBar(
     redoVisibility: MutableState<Boolean>,
     colorValue: MutableState<Color>,
     bgColorValue: MutableState<Color>,
-    sizeValue: MutableState<Int>
+    sizeValue: MutableState<Int>,
+    onReset: () -> Unit,
 ) {
     Row(modifier = Modifier.padding(12.dp), horizontalArrangement = Arrangement.SpaceAround) {
         MenuItems(
@@ -43,7 +44,7 @@ fun ControlsBar(
             "undo",
             if (undoVisibility.value) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
         ) {
-            if (undoVisibility.value) undoVisibility.value = !undoVisibility.value
+           undoVisibility.value = !undoVisibility.value
         }
         MenuItems(
             R.drawable.baseline_redo_24,
@@ -58,6 +59,7 @@ fun ControlsBar(
             if (redoVisibility.value || undoVisibility.value) MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant
         ) {
             drawController.reset()
+            onReset.invoke()
         }
         MenuItems(R.drawable.baseline_color_lens_24, "stroke color", colorValue.value) {
             onColorClick()
